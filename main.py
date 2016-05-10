@@ -5,7 +5,7 @@ FILENAME = "./test/__init__.py"
 
 def grabThingsBetweenDelimiters(leftDelim, rightDelim, string):
     string.split()
-    if (string[0] is "@"):j
+    if (string[0] is "@"):
         return
 
     elif (string[0] is ":"):
