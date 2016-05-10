@@ -1,3 +1,4 @@
+# sphynx
 def foo(alpha, beta, gamma):
     """
     :param alpha: apples
@@ -20,6 +21,7 @@ def bar(beta):
     """
     return []
 
+# doxygen
 def my_method(x, y):
     """
     my_method description

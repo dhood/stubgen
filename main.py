@@ -3,9 +3,11 @@ import ast
 FILENAME = "./test/__init__.py"
 
 
-def grabThingsBetweenColons(string):
-    if (string[0] is "@"):
+def grabThingsBetweenDelimiters(leftDelim, rightDelim, string):
+    string.split()
+    if (string[0] is "@"):j
         return
+
     elif (string[0] is ":"):
         # we're doxygen
         return
