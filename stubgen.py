@@ -3,7 +3,7 @@ import ast
 FILENAME = "./test/__init__.py"
 
 
-def grabThingsBetweenDelimiters(leftDelim, rightDelim, string):
+def parse_docstring(leftDelim, rightDelim, string):
     string.split()
     if (string[0] is "@"):
         return
@@ -22,10 +22,6 @@ def main():
         function_definitions = [node for node in module.body if isinstance(node, ast.FunctionDef)]
 
         for f in function_definitions:
-            # print('---')
-            # print(f.name)
-            # print('---')
-            # print(ast.get_docstring(f))
             docstring = ast.get_docstring(f)
             params = {}
             returntype = ""
