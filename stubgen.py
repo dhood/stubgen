@@ -1,16 +1,42 @@
 import ast
+import re
 
 FILENAME = "./test/__init__.py"
 
 
-def parse_docstring(leftDelim, rightDelim, string):
-    string.split()
-    if (string[0] is "@"):
-        return
+def parse_docstring(leftDelim, rightDelim, docstringLines):
+    docfields = []
+    
+    fieldRegex = '\s*' + leftDelim + '(?P<fieldTag>(\w|_|\s)+)' + rightDelim + '\s+(?P<fieldText>.+)'
+    pattern = re.compile(fieldRegex)
 
-    elif (string[0] is ":"):
-        # we're doxygen
-        return
+    for line in docstringLines:  # TODO: make multiline regex
+        line = line.encode()
+        match = pattern.match(line)
+        if match:
+            fieldTag = match.group('fieldTag')
+            fieldText = match.group('fieldText')
+            fieldTags = fieldTag.split()
+            #import pdb; pdb.set_trace()
+            if len(fieldTags) == 1:
+                field = {
+                    'fieldType': fieldTags[0],
+                    'fieldText': fieldText}
+            elif len(fieldTags) == 2:
+                field = {
+                    'fieldType': fieldTags[0],
+                    'fieldArg': fieldTags[1],
+                    'fieldText': fieldText}
+            elif len(fieldTags) == 3:
+                field = {
+                    'fieldType': fieldTags[0],
+                    'fieldVal': fieldTags[1],
+                    'fieldArg': fieldTags[2],
+                    'fieldText': fieldTags[3]}
+            if field:
+                docfields.append(field)
+                print field
+    return docfields
 
 def main():
     with open(FILENAME) as fd:
