@@ -1,3 +1,4 @@
+import argparse
 import os
 import sys
 
@@ -12,7 +13,8 @@ outdir = os.path.join(srcdir, 'doc')
 doctreedir = os.path.join(outdir, '.doctrees')
 buildername = 'dummy'
 
-filename = 'output.pyi'
+global filename
+filename = None
 
 def process_docstring(app, what, name, obj, options, lines):
     if lines:
@@ -40,12 +42,22 @@ def process_docstring(app, what, name, obj, options, lines):
             ', '.join(
                 ['%s: %s' % (param, params[param]) for param in params]),
             returnType if returnType else 'Any')
-        with open(filename, 'a') as f:
-            f.write(string)
+        if filename:
+            with open(filename, 'a') as f:
+                f.write(string)
 
 if __name__ == '__main__':
-    with open(filename, 'w') as f:
-        f.write('from typing import Any\n\n')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--output', '-o', action='store', help='location of stubs file')
+    args = parser.parse_args()
+
+    if args.output:
+        global filename
+        filename = args.output
+        if not os.path.exists(os.path.dirname(filename)):
+            os.makedirs(os.path.dirname(filename))
+        with open(filename, 'w') as f:
+            f.write('from typing import Any\n\n')
 
     app = Sphinx(srcdir, confdir, outdir, doctreedir, buildername, freshenv=True)
     app.connect('autodoc-process-docstring', process_docstring)
